@@ -96,15 +96,21 @@ export default function App() {
 
     // Canal: Ruido Blanco
     whiteSourceRef.current = createNoise(ctx, 'white');
+    const whiteFilter = ctx.createBiquadFilter();
+    whiteFilter.type = 'lowpass';
+    whiteFilter.frequency.value = 3000;
     whiteGainRef.current = ctx.createGain();
     whiteGainRef.current.gain.value = whiteVolume / 100;
-    whiteSourceRef.current.connect(whiteGainRef.current).connect(masterGainRef.current);
+    whiteSourceRef.current.connect(whiteFilter).connect(whiteGainRef.current).connect(masterGainRef.current);
 
     // Canal: Ruido Rosa
     pinkSourceRef.current = createNoise(ctx, 'pink');
+    const pinkFilter = ctx.createBiquadFilter();
+    pinkFilter.type = 'lowpass';
+    pinkFilter.frequency.value = 3000;
     pinkGainRef.current = ctx.createGain();
     pinkGainRef.current.gain.value = pinkVolume / 100;
-    pinkSourceRef.current.connect(pinkGainRef.current).connect(masterGainRef.current);
+    pinkSourceRef.current.connect(pinkFilter).connect(pinkGainRef.current).connect(masterGainRef.current);
 
     // Canal: Ruido Marrón (Con filtro para suavizarlo)
     brownSourceRef.current = createNoise(ctx, 'brown');
