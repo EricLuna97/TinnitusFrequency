@@ -39,7 +39,7 @@ export default function App() {
 
   // Motor algorítmico para generar los colores de ruido
   const createNoise = (ctx, type) => {
-    const bufferSize = 2 * ctx.sampleRate;
+    const bufferSize = 20 * ctx.sampleRate;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const output = buffer.getChannelData(0);
     
