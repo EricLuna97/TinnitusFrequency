@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [segundosReproduccion, setSegundosReproduccion] = useState(0);
   
   // Estados con localStorage para recordar la última configuración
   const [whiteVolume, setWhiteVolume] = useState(() => Number(localStorage.getItem('tinnitus_white')) || 0);
@@ -36,6 +37,38 @@ export default function App() {
     localStorage.setItem('tinnitus_freq', frequency);
     localStorage.setItem('tinnitus_timer', timer);
   }, [whiteVolume, pinkVolume, brownVolume, oscVolume, frequency, timer]);
+
+  // Lógica del contador de sesión a prueba de modo suspensión
+  useEffect(() => {
+    let interval;
+
+    if (isPlaying) {
+      // Como siempre arrancamos de cero, solo guardamos la hora de inicio
+      const tiempoInicio = Date.now();
+      
+      interval = setInterval(() => {
+        const tiempoActual = Date.now();
+        // Calculamos la diferencia exacta sin depender de la variable de estado previa
+        setSegundosReproduccion(Math.floor((tiempoActual - tiempoInicio) / 1000));
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isPlaying]); 
+
+  // Formateador de tiempo (MM:SS o HH:MM:SS)
+  const formatearTiempo = (totalSegundos) => {
+    const horas = Math.floor(totalSegundos / 3600);
+    const minutos = Math.floor((totalSegundos % 3600) / 60);
+    const segundos = totalSegundos % 60;
+
+    if (horas > 0) {
+      return `${horas}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+    }
+    return `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+  };
 
   // Motor algorítmico para generar los colores de ruido
   const createNoise = (ctx, type) => {
@@ -134,6 +167,7 @@ export default function App() {
     brownSourceRef.current.start();
     oscRef.current.start();
     
+    setSegundosReproduccion(0); // Reinicia el contador de sesión
     setIsPlaying(true);
 
     // Temporizador con Fade Out de 5 segundos
@@ -204,7 +238,7 @@ export default function App() {
             color: isPlaying ? '#ccfbf1' : '#042f2e', 
             fontSize: '16px', 
             fontWeight: 'bold', 
-            marginBottom: '40px', 
+            marginBottom: '10px', 
             cursor: 'pointer',
             transition: 'background-color 0.3s, transform 0.2s',
             animation: isPlaying ? 'pulse 2.5s infinite' : 'none'
@@ -212,6 +246,18 @@ export default function App() {
         >
           {isPlaying ? 'REPRODUCIENDO...' : 'REPRODUCIR'}
         </button>
+
+        {/* Indicador de tiempo de sesión */}
+        <div style={{
+          fontSize: '14px',
+          color: '#94a3b8',
+          fontFamily: 'monospace',
+          textAlign: 'center',
+          marginBottom: '40px',
+          height: '20px' // Mantiene la estructura para que no salte el layout
+        }}>
+          {isPlaying ? `Tiempo de sesión: ${formatearTiempo(segundosReproduccion)}` : "Esperando iniciar..."}
+        </div>
 
         <div style={{ width: '100%', maxWidth: '340px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
@@ -243,4 +289,4 @@ export default function App() {
       </div>
     </>
   );
-}
+} 
