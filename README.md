@@ -1,33 +1,45 @@
-# Alivio Tinnitus (Tinnitus Relief PWA)
+# Alivio Tinnitus 🎧
 
-Una Aplicación Web Progresiva (PWA) de nivel clínico, diseñada para el alivio y enmascaramiento del tinnitus (acúfenos). Construida con React y la Web Audio API, genera terapias sonoras matemáticamente puras en tiempo real, sin depender de archivos de audio pregrabados.
+Una Aplicación Web Progresiva (PWA) minimalista y utilitaria diseñada para el enmascaramiento acústico del acúfeno (tinnitus). Construida con React y la Web Audio API, la herramienta genera frecuencias y ruidos estandarizados en tiempo real para proporcionar alivio auditivo mediante la saturación controlada de frecuencias.
 
-## 🚀 Características Principales
+🔗 **[Ver aplicación en producción](https://tinnitus-frequency.vercel.app/)**
 
-* **Síntesis Algorítmica en Tiempo Real:** Genera ruido Blanco, Rosa y Marrón (Rojo) puramente mediante matemáticas. Al no usar samples ni MP3, elimina el problema de los "loops" (bucles de audio) que impiden la relajación profunda del cerebro.
-* **Arquitectura de Mezclador de Cero Latencia:** Todos los nodos de audio se instancian simultáneamente. El control se realiza puramente mediante la manipulación de la ganancia (volumen), replicando el comportamiento de una consola de audio profesional y garantizando cero interrupciones al cambiar de sonido.
-* **100% Offline (PWA):** Soporte completo para funcionar sin conexión mediante Service Workers. Ideal para su uso nocturno en "Modo Avión", garantizando privacidad, ahorro total de datos y batería, y un entorno libre de publicidades.
-* **Oscilador de Tono Puro:** Incluye un generador de onda senoidal de alta precisión con control de afinación (pitch) para emparejamiento de acúfenos tonales.
-* **Persistencia de Estado:** Guarda automáticamente la configuración exacta del usuario (volúmenes de mezcla y frecuencias) utilizando `localStorage`.
-* **Diseño Accesible:** Interfaz minimalista en "Dark Mode" por defecto, pensada para reducir la fatiga visual nocturna en usuarios con estrés auditivo.
+## ⚙️ Características Técnicas
 
-## 🛠️ Stack Tecnológico
+*   **Motor de Audio en Tiempo Real:** Utiliza algoritmos matemáticos a través de la Web Audio API para generar Ruido Blanco, Ruido Rosa y Ruido Rojo (Marrón), sin depender de archivos de audio pregrabados.
+*   **Optimización Psicoacústica:** Implementación de búferes de memoria extendidos (20 segundos) en la generación de estática para destruir la percepción de patrones rítmicos o bucles mecánicos en el cerebro.
+*   **Oscilador Tonal Preciso:** Generador de tono puro ajustable entre 8000 Hz y 17000 Hz para realizar *Notch Therapy* o emparejamiento exacto de la frecuencia del acúfeno.
+*   **Temporizador de Sesión Absoluto:** Sistema de medición de tiempo basado en marcas de tiempo reales (`Date.now()`), garantizando precisión clínica incluso cuando el sistema operativo móvil entra en modo de suspensión (*throttling*).
+*   **Persistencia de Estado:** Guardado automático de los niveles de volumen y configuración de frecuencias en el almacenamiento local (`localStorage`).
+*   **Diseño Pragmático:** Interfaz de usuario (UI) limpia, sin distracciones visuales, enfocada en la usabilidad y el control absoluto de los parámetros.
 
-* **Frontend:** React (Hooks, Gestión de Estado).
-* **Audio Engine:** Web Audio API (`AudioContext`, `BiquadFilterNode`, `GainNode`, `OscillatorNode`).
-* **Build Tool:** Vite.
-* **PWA:** Vite PWA Plugin.
-* **Deployment:** Vercel.
+## 🛠️ Tecnologías Utilizadas
 
-## 🧠 Arquitectura de Audio (Web Audio API)
+*   **Frontend:** React.js
+*   **Audio:** Web Audio API (Nativo del navegador)
+*   **Estilos:** CSS-in-JS (Inline) minimalista
+*   **Despliegue:** Vercel
 
-La aplicación no reproduce archivos, sino que instancia un `AudioContext` en el cliente.
-- **Ruido Blanco:** Generado mediante `Math.random()` puro.
-- **Ruido Rosa:** Implementa un algoritmo de balanceo de octavas para distribuir la energía espectral simulando fenómenos naturales.
-- **Ruido Marrón:** Utiliza un sistema de integración de estado previo y se filtra a través de un `BiquadFilterNode` (Lowpass a 600Hz) para lograr la atenuación de agudos característica.
+## 🚀 Instalación y Desarrollo Local
 
-## 💻 Instalación y Desarrollo Local
+Para auditar o modificar el código en un entorno de desarrollo local:
 
 1. Clonar el repositorio:
-   ```bash
-   git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/tu-usuario/tu-repo.git)
+   
+```bash
+   git clone [https://github.com/EricLuna97/AlivioTinnitus.git](https://github.com/EricLuna97/AlivioTinnitus.git)
+Navegar al directorio del proyecto:
+
+Bash
+   cd AlivioTinnitus
+Instalar las dependencias:
+
+Bash
+   npm install
+Levantar el servidor de desarrollo:
+
+Bash
+   npm run dev 
+   # o npm start, dependiendo del empaquetador utilizado
+📋 Control de Calidad (QA)
+Este proyecto ha sido sometido a pruebas de estrés en dispositivos físicos reales, asegurando la mitigación de falsos positivos en entornos móviles, el correcto manejo de la memoria caché del Service Worker y la estabilidad del motor de audio bajo políticas estrictas de ahorro de batería de Android/iOS.
