@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import Footer from './Footer';
 
 export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -286,6 +287,7 @@ export default function App() {
           </div>
 
         </div>
+        <Footer />
       </div>
     </>
   );
